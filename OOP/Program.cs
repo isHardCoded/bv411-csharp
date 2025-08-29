@@ -34,6 +34,28 @@ namespace OOP {
     }
 
     // TextDocument : Document { content, override ShowData() }
+    class TextDocument : Document
+    {
+        private string content;
+
+        public string Content
+        {
+            get { return content; }
+            set { content = value; }
+        }
+
+        public TextDocument(string id, string author, string content) : base(id, author)
+        {
+            Content = content;
+        }
+
+        public override void ShowData()
+        {
+            Console.WriteLine($"Текстовый документ (ID: {Id})");
+            Console.WriteLine($"Автор: {Author}");
+            Console.WriteLine($"Содержание: {Content}");
+        }
+    }
 
     // SignedDocument : Document { signature, override ShowData() }
 
