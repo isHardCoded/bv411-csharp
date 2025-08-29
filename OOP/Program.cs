@@ -4,69 +4,73 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OOP
-{
-    class Employee
-    {
-        public string name;
-        public string surname;
-        public int age;
-        private float salary;
+namespace OOP {
 
-        public Employee(string name, string surname, int age, float salary)
+    abstract class Figure
+    {
+        protected string name;
+
+        public string GetName()
+        {
+            return name;
+        }
+
+        public void SetName(string name)
         {
             this.name = name;
-            this.surname = surname;
-            this.age = age;
-            this.salary = salary;
         }
 
-        public float getSalary()
-        {
-            return salary;
-        }
+        public abstract double Area();
 
-        public float setSalary(float amount)
+        public virtual void ShowData()
         {
-            return salary += amount;
-        }
-
-        public virtual string Work()
-        {
-            return "Working";
+            Console.WriteLine($"Фигура: {GetName()}");
+            Console.WriteLine($"Площадь: {Area()}");
         }
     }
 
-    class Programmer : Employee
+    class Circle : Figure
     {
-        public string pos;
+        private double radius;
 
-        public Programmer(
-            string name, 
-            string surname, 
-            int age, 
-            float salary, 
-            string pos) : base(name, surname, age, salary)
+        public double GetRadius()
         {
-            this.pos = pos;
+            return radius;
         }
 
-        public override string Work()
+        public void SetRadius(double radius)
         {
-            return "typing code";
+            if (radius < 0)
+            {
+                throw new ArgumentException("Радиус должен быть больше нуля");
+            }
+
+            this.radius = radius;
+        }
+
+        public Circle(double radius)
+        {
+            SetName("Круг");
+            SetRadius(radius);
+        }
+
+        public override double Area()
+        {
+            // Pi * r^2
+            return Math.PI * radius * radius;
+        }
+
+        public override void ShowData()
+        {
+            base.ShowData();
         }
     }
-
 
     internal class Program
     {
         static void Main(string[] args)
         {
-            Programmer programmer = new Programmer("Bob", "Doe", 25, 30000, "Trainee");
-
-            Console.WriteLine($"Programmer {programmer.name} {programmer.Work()}");
-        
-            Console.ReadKey();
+            
         }
     }
 }
