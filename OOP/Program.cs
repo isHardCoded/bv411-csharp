@@ -25,7 +25,7 @@ namespace OOP {
         public virtual void ShowData()
         {
             Console.WriteLine($"Фигура: {GetName()}");
-            Console.WriteLine($"Площадь: {Area()}");
+            Console.WriteLine($"Площадь: {Area():F2}");
         }
     }
 
@@ -63,6 +63,7 @@ namespace OOP {
         public override void ShowData()
         {
             base.ShowData();
+            Console.WriteLine($"Радиус: {radius}");
         }
     }
 
@@ -119,20 +120,77 @@ namespace OOP {
         public override void ShowData()
         {
             base.ShowData();
+            Console.WriteLine($"Ширина: {width}");
+            Console.WriteLine($"Высота: {height}");
         }
     }
 
+    class Triangle : Figure
+    {
+        private double @base;
+        private double height;
+
+        public double GetBase()
+        {
+            return @base;
+        }
+
+        public void SetBase(double @base)
+        {
+            this.@base = @base;
+        }
+
+        public double GetHeight()
+        {
+            return height;
+        }
+
+        public void SetHeight(double height)
+        {
+            if (height < 0)
+            {
+                throw new ArgumentException("Основание должно быть больше нуля");
+            }
+            this.height = height;
+        }
+
+        public Triangle(double @base, double height)
+        {
+            SetName("Треугольник");
+            SetBase(@base);
+            SetHeight(height);
+        }
+
+        public override double Area()
+        {
+            return @base * height * 0.5;
+        }
+
+        public override void ShowData()
+        {
+            base.ShowData();
+            Console.WriteLine($"Основание: {@base}");
+            Console.WriteLine($"Высота: {height}");
+        }
+    }
     internal class Program
     {
         static void Main(string[] args)
         {
-            Circle circle = new Circle(5);
-            circle.ShowData();
+            Figure[] figures = new Figure[]
+            {
+                new Circle(5),
+                new Rectangle(2, 5),
+                new Triangle(10, 5)
+            };
 
-            Rectangle rectangle = new Rectangle(2, 5);
-            rectangle.ShowData();
+            foreach(var figure in figures)
+            {
+                figure.ShowData();
+                Console.WriteLine();
+            }
 
             Console.ReadKey();
-        }
+        }      
     }
 }
