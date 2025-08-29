@@ -66,11 +66,73 @@ namespace OOP {
         }
     }
 
+    class Rectangle : Figure
+    {
+        // создать свойства ширины и высоты
+        private double width;
+        private double height;
+
+        // создать методы для работы со свойствами
+        public double GetWidth()
+        {
+            return width;
+        }
+
+        public void SetWidth(double width)
+        {
+            if (width < 0)
+            {
+                throw new ArgumentException("Ширина должна быть больше нуля");
+            }
+
+            this.width = width;
+        }
+
+        public double GetHeight()
+        {
+            return height;
+        }
+
+        public void SetHeight(double height)
+        {
+            if (height < 0)
+            {
+                throw new ArgumentException("Высота должна быть больше нуля");
+            }
+
+            this.height = height;
+        }
+
+        public Rectangle(double width, double height)
+        {
+            SetName("Прямоугольник");
+            SetWidth(width);
+            SetHeight(height);
+        }
+
+        // реализовать методы Area() и ShowData()
+        public override double Area()
+        {
+            return width * height;
+        }
+
+        public override void ShowData()
+        {
+            base.ShowData();
+        }
+    }
+
     internal class Program
     {
         static void Main(string[] args)
         {
-            
+            Circle circle = new Circle(5);
+            circle.ShowData();
+
+            Rectangle rectangle = new Rectangle(2, 5);
+            rectangle.ShowData();
+
+            Console.ReadKey();
         }
     }
 }
