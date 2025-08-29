@@ -24,9 +24,9 @@ namespace OOP {
             set { author = value; }
         }
 
-        public Document(string id, string author)
+        public Document(string author)
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString();
             Author = author;
         }
 
@@ -34,6 +34,7 @@ namespace OOP {
     }
 
     // TextDocument : Document { content, override ShowData() }
+
     class TextDocument : Document
     {
         private string content;
@@ -44,7 +45,7 @@ namespace OOP {
             set { content = value; }
         }
 
-        public TextDocument(string id, string author, string content) : base(id, author)
+        public TextDocument(string author, string content) : base(author)
         {
             Content = content;
         }
@@ -63,9 +64,8 @@ namespace OOP {
     {
         static void Main(string[] args)
         {
-            
-            Guid uuid = Guid.NewGuid();
-            Console.WriteLine(uuid.ToString());
+            TextDocument doc = new TextDocument("John", "Some content");
+            doc.ShowData();
 
             Console.ReadKey();
         }      
