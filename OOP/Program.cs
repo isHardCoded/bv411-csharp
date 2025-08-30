@@ -9,10 +9,10 @@ namespace OOP {
     // abstract Document { id, author, abstract ShowData() }
     abstract class Document
     {
-        private string id;
+        private Guid id;
         private string author;
 
-        public string Id
+        public Guid Id
         {
             get { return id; }
             set { id = value; }
@@ -26,7 +26,7 @@ namespace OOP {
 
         public Document(string author)
         {
-            Id = Guid.NewGuid().ToString();
+            Id = Guid.NewGuid();
             Author = author;
         }
 
@@ -60,12 +60,44 @@ namespace OOP {
 
     // SignedDocument : Document { signature, override ShowData() }
 
+    class SignedDocument : Document
+    {
+        private string signature;
+
+        public string Signature
+        {
+            get { return signature; }
+            set { signature = value; }
+        }
+
+        public SignedDocument(string author, string signature) : base(author)
+        {
+            Signature = signature;
+        }
+
+        public override void ShowData()
+        {
+            Console.WriteLine($"Текстовый документ (ID: {Id})");
+            Console.WriteLine($"Автор: {Author}");
+            Console.WriteLine($"Подпись: {Signature}");
+        }
+    }
+
     internal class Program
     {
         static void Main(string[] args)
         {
-            TextDocument doc = new TextDocument("John", "Some content");
-            doc.ShowData();
+            Document[] documents = new Document[]
+            {
+                new TextDocument("john", "some content"),
+                new SignedDocument("tom", "sign_tom"),
+            };
+
+            foreach (var document in documents)
+            {
+                document.ShowData();
+                Console.WriteLine();
+            }
 
             Console.ReadKey();
         }      
