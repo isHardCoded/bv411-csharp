@@ -6,86 +6,46 @@ using System.Threading.Tasks;
 
 namespace OOP {
 
-    // создать интерфейс IVehicle с методами: StartEngine(), StopEngine()
-    public interface IVehicle
+    public interface IFlyable
     {
-        void StartEngine();
-        void StopEngine();
+        void Fly();
     }
 
-    // создать два класса Car и Motorcycle
-    public class Car : IVehicle
+    public interface ISwimmable
     {
-        public void StartEngine()
-        {
-            Console.WriteLine("Двигатель машины запущен");
-        }
-
-        public void StopEngine()
-        {
-            Console.WriteLine("Двигатель машины остановлен");
-        }
+        void Swim();
     }
 
-    public class Motorcycle : IVehicle
+    public class Duck : IFlyable, ISwimmable 
     {
-        public void StartEngine()
+        public void Fly()
         {
-            Console.WriteLine("Двигатель мотоцикла запущен");
+            Console.WriteLine("Утка летает");
         }
 
-        public void StopEngine()
+        public void Swim()
         {
-            Console.WriteLine("Двигатель мотоцикла остановлен");
+            Console.WriteLine("Утка плавает");
         }
     }
 
-    public class Plane : IVehicle
+    public class Fish : ISwimmable
     {
-        public void StartEngine()
+        public void Swim()
         {
-            Console.WriteLine("Двигатель самолета запущен");
-        }
-
-        public void StopEngine()
-        {
-            Console.WriteLine("Двигатель самолета остановлен");
+            Console.WriteLine("Рыба плавает");
         }
     }
-
-    // в каждом классе написать реализацию методов StartEngine() и StopEngine()
-
-    // создать в программе класс TestDrive, который будет принимать объект типа IVehicle
-    // и последовательно вызывать для него методы StartEngine() и StopEngine()
-
-    public class TestDrive
-    {
-        public void StartTest(IVehicle vehicle)
-        {
-            vehicle.StartEngine();
-            vehicle.StopEngine();
-        }
-    }
-
-    // создать объекты Car и Motorcycle
-
+    
     internal class Program
     {
         static void Main(string[] args)
         {
-            IVehicle[] vehicles = new IVehicle[]
-            {
-                new Car(),
-                new Motorcycle(),
-                new Plane(),
-            };
+            Duck duck = new Duck();
+            Fish fish = new Fish();
 
-            TestDrive testDrive = new TestDrive();
-
-            foreach (var vehicle in vehicles)
-            {
-                testDrive.StartTest(vehicle);
-            }
+            duck.Swim();
+            fish.Swim();
 
             Console.ReadKey();
         }      
