@@ -6,80 +6,32 @@ using System.Threading.Tasks;
 
 namespace OOP {
 
-    // abstract Document { id, author, abstract ShowData() }
-    abstract class Document
+    public interface IAnimal
     {
-        private Guid id;
-        private string author;
-
-        public Guid Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
-
-        public string Author
-        {
-            get { return author; }
-            set { author = value; }
-        }
-
-        public Document(string author)
-        {
-            Id = Guid.NewGuid();
-            Author = author;
-        }
-
-        public abstract void ShowData();
+        void MakeSound();
     }
 
-    // TextDocument : Document { content, override ShowData() }
-
-    class TextDocument : Document
+    public class Cat : IAnimal
     {
-        private string content;
-
-        public string Content
+        public void MakeSound()
         {
-            get { return content; }
-            set { content = value; }
-        }
-
-        public TextDocument(string author, string content) : base(author)
-        {
-            Content = content;
-        }
-
-        public override void ShowData()
-        {
-            Console.WriteLine($"Текстовый документ (ID: {Id})");
-            Console.WriteLine($"Автор: {Author}");
-            Console.WriteLine($"Содержание: {Content}");
+            Console.WriteLine("Meow");
         }
     }
 
-    // SignedDocument : Document { signature, override ShowData() }
-
-    class SignedDocument : Document
+    public class Dog : IAnimal
     {
-        private string signature;
-
-        public string Signature
+        public void MakeSound()
         {
-            get { return signature; }
-            set { signature = value; }
+            Console.WriteLine("Woof");
         }
+    }
 
-        public SignedDocument(string author, string signature) : base(author)
+    public class AnimalSoundPlayer
+    {
+        public void PlaySound(IAnimal animal)
         {
-            Signature = signature;
-        }
-
-        public override void ShowData()
-        {
-            Console.WriteLine($"Текстовый документ (ID: {Id})");
-            Console.WriteLine($"Автор: {Author}");
-            Console.WriteLine($"Подпись: {Signature}");
+            animal.MakeSound();
         }
     }
 
@@ -87,16 +39,16 @@ namespace OOP {
     {
         static void Main(string[] args)
         {
-            Document[] documents = new Document[]
-            {
-                new TextDocument("john", "some content"),
-                new SignedDocument("tom", "sign_tom"),
+            IAnimal[] animals = new IAnimal[] {
+                new Cat(),
+                new Dog()
             };
+                    
+            AnimalSoundPlayer player = new AnimalSoundPlayer();
 
-            foreach (var document in documents)
+            foreach (var animal in animals)
             {
-                document.ShowData();
-                Console.WriteLine();
+                player.PlaySound(animal);
             }
 
             Console.ReadKey();
