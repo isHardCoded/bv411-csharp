@@ -6,50 +6,39 @@ using System.Threading.Tasks;
 
 namespace OOP {
 
-    public interface IAnimal
+    // создать интерфейс IVehicle с методами: StartEngine(), StopEngine()
+    public interface IVehicle
     {
-        void MakeSound();
+        void StartEngine();
+        void StopEngine();
     }
 
-    public class Cat : IAnimal
+    // создать два класса Car и Motorcycle
+    public class Car : IVehicle
     {
-        public void MakeSound()
+        public void StartEngine()
         {
-            Console.WriteLine("Meow");
+            Console.WriteLine("Двигатель машины запущен");
+        }
+
+        public void StopEngine()
+        {
+            Console.WriteLine("Двигатель машины остановлен");
         }
     }
 
-    public class Dog : IAnimal
-    {
-        public void MakeSound()
-        {
-            Console.WriteLine("Woof");
-        }
-    }
+    // в каждом классе написать реализацию методов StartEngine() и StopEngine()
 
-    public class AnimalSoundPlayer
-    {
-        public void PlaySound(IAnimal animal)
-        {
-            animal.MakeSound();
-        }
-    }
+    // создать в программе класс TestDrive, который будет принимать объект типа IVehicle
+    // и последовательно вызывать для него методы StartEngine() и StopEngine()
+
+    // создать объекты Car и Motorcycle
 
     internal class Program
     {
         static void Main(string[] args)
         {
-            IAnimal[] animals = new IAnimal[] {
-                new Cat(),
-                new Dog()
-            };
-                    
-            AnimalSoundPlayer player = new AnimalSoundPlayer();
-
-            foreach (var animal in animals)
-            {
-                player.PlaySound(animal);
-            }
+            
 
             Console.ReadKey();
         }      
