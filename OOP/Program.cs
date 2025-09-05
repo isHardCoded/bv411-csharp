@@ -11,17 +11,22 @@ namespace OOP {
     {
         static void Main(string[] args)
         {
-            string sourceDir = @"C:\sourceDir";
-            string destDir = @"C:\destDir";
+            string path = @"C:\MyDir";
 
             try
             {
-                Directory.Move(sourceDir, destDir);
-                Console.WriteLine($"Каталог успешно перемещен из {sourceDir} в {destDir}");
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, true);
+                }
+                else
+                {
+                    Console.WriteLine("Каталог не существует");
+                }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine(e.ToString());
             }
 
             Console.ReadKey();
