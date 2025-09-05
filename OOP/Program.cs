@@ -11,23 +11,51 @@ namespace OOP {
     {
         static void Main(string[] args)
         {
-            string path = @"C:\MyDir";
+            string createPath = @"C:\TestDir";
+            string movePath = @"C:\MovedDir";
 
             try
             {
-                if (Directory.Exists(path))
+                if (!Directory.Exists(createPath))
                 {
-                    Directory.Delete(path, true);
+                    Directory.CreateDirectory(createPath);
+                    Console.WriteLine($"Каталог создан: {createPath}");
+                } else
+                {
+                    Console.WriteLine($"Каталог уже существует");
                 }
-                else
+
+                if (Directory.Exists(createPath))
                 {
-                    Console.WriteLine("Каталог не существует");
+                    if (!Directory.Exists (movePath))
+                    {
+                        Directory.Move(createPath, movePath);
+                        Console.WriteLine($"Каталог перемещен из {createPath} в {movePath}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Каталог назначения уже существует: {movePath}");
+                    }
+                } else
+                {
+                    Console.WriteLine($"Каталог для перемещения не существует: {createPath}");
+                }
+
+                if (Directory.Exists(movePath))
+                {
+                    Directory.Delete(movePath, true);
+                    Console.WriteLine($"Каталог удален: {movePath}");
+                } else
+                {
+                    Console.WriteLine($"Каталог для удаления не существует");
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.Write(e.ToString());
             }
+
+           
 
             Console.ReadKey();
         }      
