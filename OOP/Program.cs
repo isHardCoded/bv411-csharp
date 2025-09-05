@@ -11,18 +11,13 @@ namespace OOP {
     {
         static void Main(string[] args)
         {
-            string path = @"C:\NewDirectory";
+            string sourceDir = @"C:\sourceDir";
+            string destDir = @"C:\destDir";
 
             try
             {
-                if (Directory.Exists(path))
-                {
-                    Console.WriteLine("Каталог уже существует");
-                } else
-                {
-                    DirectoryInfo dir = Directory.CreateDirectory(path);
-                    Console.WriteLine($"Каталог создан успешно по пути: {dir.FullName}");
-                }
+                Directory.Move(sourceDir, destDir);
+                Console.WriteLine($"Каталог успешно перемещен из {sourceDir} в {destDir}");
             }
             catch (Exception ex)
             {
