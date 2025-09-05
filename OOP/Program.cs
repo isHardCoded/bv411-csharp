@@ -11,13 +11,12 @@ namespace OOP {
     {
         static void Main(string[] args)
         {
-            using(StreamReader reader = new StreamReader("file.txt"))
+            string[] lines = { "Line 1", "Line 2", "Line 3" };
+            using (StreamWriter writer = new StreamWriter("file.txt", append: true))
             {
-                string line;
-
-                while((line = reader.ReadLine()) != null)
+                foreach (string line in lines)
                 {
-                    Console.WriteLine(line);
+                    writer.WriteLine(line);
                 }
             }
 
