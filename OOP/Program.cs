@@ -11,19 +11,15 @@ namespace OOP {
     {
         static void Main(string[] args)
         {
-            try
+            using(StreamReader reader = new StreamReader("file.txt"))
             {
-                string[] lines = File.ReadAllLines("file.txt");
+                string line;
 
-                foreach (string line in lines)
+                while((line = reader.ReadLine()) != null)
                 {
                     Console.WriteLine(line);
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }     
 
             Console.ReadKey();
         }      
