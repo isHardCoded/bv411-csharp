@@ -3,49 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace OOP {
 
-    public interface IFlyable
-    {
-        void Fly();
-    }
-
-    public interface ISwimmable
-    {
-        void Swim();
-    }
-
-    public class Duck : IFlyable, ISwimmable 
-    {
-        public void Fly()
-        {
-            Console.WriteLine("Утка летает");
-        }
-
-        public void Swim()
-        {
-            Console.WriteLine("Утка плавает");
-        }
-    }
-
-    public class Fish : ISwimmable
-    {
-        public void Swim()
-        {
-            Console.WriteLine("Рыба плавает");
-        }
-    }
-    
     internal class Program
     {
         static void Main(string[] args)
         {
-            Duck duck = new Duck();
-            Fish fish = new Fish();
+            DriveInfo[] allDrives = DriveInfo.GetDrives();
 
-            duck.Swim();
-            fish.Swim();
+            foreach (DriveInfo drive in allDrives)
+            {
+                long bytes = drive.TotalSize;
+
+                double sizeInGB = (double)bytes / (1024 * 1024 * 1024);
+                double sizeInMB = (double)bytes / (1024 * 1024);
+
+                Console.WriteLine($"Название диска: {drive.Name}");
+                Console.WriteLine($"Метка тома: {drive.VolumeLabel}");
+                Console.WriteLine($"Общий размер в GB: {sizeInGB:F2}");
+                Console.WriteLine($"Общий размер в MB: {sizeInMB:F2}");
+                Console.WriteLine($"Свободное место для использования: {drive.AvailableFreeSpace}");
+                Console.WriteLine($"Тип файловой системы: {drive.DriveFormat}");
+            }
 
             Console.ReadKey();
         }      
