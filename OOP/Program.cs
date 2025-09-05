@@ -11,21 +11,22 @@ namespace OOP {
     {
         static void Main(string[] args)
         {
-            DriveInfo[] allDrives = DriveInfo.GetDrives();
+            string path = @"C:\NewDirectory";
 
-            foreach (DriveInfo drive in allDrives)
+            try
             {
-                long bytes = drive.TotalSize;
-
-                double sizeInGB = (double)bytes / (1024 * 1024 * 1024);
-                double sizeInMB = (double)bytes / (1024 * 1024);
-
-                Console.WriteLine($"Название диска: {drive.Name}");
-                Console.WriteLine($"Метка тома: {drive.VolumeLabel}");
-                Console.WriteLine($"Общий размер в GB: {sizeInGB:F2}");
-                Console.WriteLine($"Общий размер в MB: {sizeInMB:F2}");
-                Console.WriteLine($"Свободное место для использования: {drive.AvailableFreeSpace}");
-                Console.WriteLine($"Тип файловой системы: {drive.DriveFormat}");
+                if (Directory.Exists(path))
+                {
+                    Console.WriteLine("Каталог уже существует");
+                } else
+                {
+                    DirectoryInfo dir = Directory.CreateDirectory(path);
+                    Console.WriteLine($"Каталог создан успешно по пути: {dir.FullName}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
 
             Console.ReadKey();
