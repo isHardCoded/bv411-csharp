@@ -48,17 +48,6 @@ namespace OOP {
     
         public string Format(string text)
         {
-            // привести весь текст к верхнему регистру
-            // добавить нумерацию строк
-
-            // Входные данные: 
-            // hello
-            // world
-
-            // Выходные данные:
-            // 1. HELLO
-            // 2. WORLD
-
             string[] lines = text.Split('\n');
 
             for (int i = 0; i < lines.Length; i++)
@@ -69,28 +58,110 @@ namespace OOP {
             return string.Join("\n", lines);
         }
     }
+    
+    public class DirectoryManager
+    {
+        private string directoryPath;
+
+        public DirectoryManager(string directoryPath)
+        {
+            try
+            {
+                if (!Directory.Exists(directoryPath))
+                {
+                    throw new DirectoryNotFoundException("Директория не найдена: " + directoryPath);
+                }
+                this.directoryPath = directoryPath;
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                Console.WriteLine("Ошибка: " + ex.Message);
+                throw;
+            }
+        }
+
+        public string[] ListFiles()
+        {
+            try
+            {
+                string[] files = Directory.GetFiles(directoryPath, "*.txt");
+                if (files.Length == 0)
+                {
+                    throw new FileNotFoundException("В директории нет файлов с раширением .txt");
+                }
+
+                return files;
+
+                
+            } catch (FileNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new string[0];
+            }
+        }
+
+        public string ReadFile(string fileName)
+        {
+            try
+            {
+                string fullPath = Path.Combine(directoryPath, fileName);
+                if (!File.Exists(fullPath))
+                {
+                    throw new FileNotFoundException("Файл не найден: " + fullPath);
+                }
+
+                TextFile textFile = new TextFile(fullPath);
+                return textFile.Read();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка при чтении файла: " + ex.Message);
+                return null;
+            }
+        }
+
+        public void WriteFile(string fileName, string content)
+        {
+             try
+            {
+                string fullPath = Path.Combine(directoryPath, fileName);
+                TextFile textFile = new TextFile(fullPath);
+                textFile.Write(content);
+            } 
+            catch(Exception ex)
+            {
+                Console.WriteLine("Ошибка при записи файла: " + ex.Message);
+            }
+        }
+
+        public string FormatFile(string fileName) {
+            try
+            {
+                string fullPath = Path.Combine(directoryPath, fileName);
+
+                if (!File.Exists(fullPath))
+                {
+                    throw new FileNotFoundException("Файл не найден: " + fullPath);
+                }
+
+                TextFile textFile = new TextFile(fullPath);
+                string content = textFile.Read();
+
+                if (content == null) return null;
+
+                return textFile.Format(content);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка при форматировании файла: " + ex.Message);
+                return null;
+            }
+        }
+    }
     internal class Program
     {
         static void Main(string[] args)
-        {
-            Console.Write("Введите путь к файлу: ");
-            string path = Console.ReadLine();
-
-            TextFile file = new TextFile(path);
-
-            //Console.Write("Введите текст, который хотите записать в файл: ");
-            //string textToWrite = Console.ReadLine();
-
-            //file.Write(textToWrite);
-            //Console.WriteLine("Данные записаны");
-            
-            string fileContent = file.Read();
-            Console.WriteLine("Содержимое файла: \n");
-            Console.WriteLine(fileContent);
-
-            string formatText = file.Format(fileContent);
-            Console.WriteLine("Отформатированный текст:\n");
-            Console.WriteLine(formatText);
+        {        
 
             Console.ReadKey();
         }      
