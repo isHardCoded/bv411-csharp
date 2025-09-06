@@ -42,8 +42,31 @@ namespace OOP {
         {
                 using (StreamWriter writer = new StreamWriter(filePath))
                 {
-                    writer.WriteLine(content);
+                    writer.Write(content);
                 }          
+        }
+    
+        public string Format(string text)
+        {
+            // привести весь текст к верхнему регистру
+            // добавить нумерацию строк
+
+            // Входные данные: 
+            // hello
+            // world
+
+            // Выходные данные:
+            // 1. HELLO
+            // 2. WORLD
+
+            string[] lines = text.Split('\n');
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                lines[i] = $"{i + 1}. {lines[i].ToUpper()}";
+            }
+
+            return string.Join("\n", lines);
         }
     }
     internal class Program
@@ -55,15 +78,19 @@ namespace OOP {
 
             TextFile file = new TextFile(path);
 
-            Console.Write("Введите текст, который хотите записать в файл: ");
-            string textToWrite = Console.ReadLine();
+            //Console.Write("Введите текст, который хотите записать в файл: ");
+            //string textToWrite = Console.ReadLine();
 
-            file.Write(textToWrite);
-            Console.WriteLine("Данные записаны");
+            //file.Write(textToWrite);
+            //Console.WriteLine("Данные записаны");
             
-            string fileContext = file.Read();
-            Console.WriteLine("Содержимое файла:");
-            Console.Write(fileContext);
+            string fileContent = file.Read();
+            Console.WriteLine("Содержимое файла: \n");
+            Console.WriteLine(fileContent);
+
+            string formatText = file.Format(fileContent);
+            Console.WriteLine("Отформатированный текст:\n");
+            Console.WriteLine(formatText);
 
             Console.ReadKey();
         }      
