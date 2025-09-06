@@ -37,6 +37,14 @@ namespace OOP {
                 
             }
         }
+    
+        public void Write(string content)
+        {
+                using (StreamWriter writer = new StreamWriter(filePath))
+                {
+                    writer.WriteLine(content);
+                }          
+        }
     }
     internal class Program
     {
@@ -45,11 +53,14 @@ namespace OOP {
             Console.Write("Введите путь к файлу: ");
             string path = Console.ReadLine();
 
+            TextFile file = new TextFile(path);
+
             Console.Write("Введите текст, который хотите записать в файл: ");
             string textToWrite = Console.ReadLine();
 
-            TextFile file = new TextFile(path);
-
+            file.Write(textToWrite);
+            Console.WriteLine("Данные записаны");
+            
             string fileContext = file.Read();
             Console.WriteLine("Содержимое файла:");
             Console.Write(fileContext);
