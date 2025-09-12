@@ -7,20 +7,38 @@ using System.IO;
 using System.Text.Json;
 
 namespace OOP {
-    class Rectangle
-    {
-        public int width { get; set; }
-        public int length { get; set; }
 
-        public Rectangle(int width, int length)
+    class Person
+    {
+        private string name;
+        private int age;
+
+        public string Name
         {
-            this.width = width;
-            this.length = length;
+            get => name;
+
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException("Name не может быть пустым");
+                }
+                name = value;
+            }
         }
 
-        public override string ToString()
+        public int Age
         {
-            return $"Rectangle: Length={length}, Width={width}";
+            get => age;
+
+            set
+            {
+                if (value < 0 || value > 85)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(Age),"Возраст должен быть от 0 до 85");
+                }
+                age = value;
+            }
         }
     }
 
@@ -28,14 +46,39 @@ namespace OOP {
     {
         static void Main(string[] args)
         {
-            //Rectangle rect = new Rectangle(5, 10);
-            //string json = JsonSerializer.Serialize(rect);
-            //File.WriteAllText("file.json", json);
+            string jsonValid = @"{ ""Name"": ""John"", ""Age"": 30 }";
+            string jsonInvalid = @"{ ""Name"": ""Tom"", ""Age"": -10 }";
 
-            string json = File.ReadAllText("file.json");
+            try
+            {
+                Person person = JsonSerializer.Deserialize<Person>(jsonValid);
+                Console.WriteLine($"Success: {person.Name}, {person.Age} лет");
+            } catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                
+            }         
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
 
-            Rectangle rect = JsonSerializer.Deserialize<Rectangle>(json);
-            Console.WriteLine(rect);
+            try
+            {
+                Person person = JsonSerializer.Deserialize<Person>(jsonInvalid);
+                Console.WriteLine($"Success: {person.Name}, {person.Age} лет");
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            Console.ReadKey();
         }      
     }
 }
