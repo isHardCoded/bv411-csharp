@@ -12,50 +12,17 @@ namespace OOP {
     {
         static void Main(string[] args)
         {
-            List<int> numbers = new List<int>() { 1, 2, 3, 4, 5 };
-            List<string> names = new List<string>() { "John", "Tom", "Jim" };
+           Dictionary<string, string> dict = new Dictionary<string, string>();
 
-            foreach (string name in names)
-            {
-                Console.WriteLine(name);
-            }
+            dict.Add("name", "Apple");
+            string value = dict["name"];
 
-            names.Add("Tim");
-            Console.WriteLine();
+            Console.WriteLine(value);
 
-            foreach (string name in names)
-            {
-                Console.WriteLine(name);
-            }
-
-            names.Remove("Tom");
-            Console.WriteLine();
-
-            foreach (string name in names)
-            {
-                Console.WriteLine(name);
-            }
-
-            names.RemoveAt(0);
-            Console.WriteLine();
-
-            foreach (string name in names)
-            {
-                Console.WriteLine(name);
-            }
-
-            names.Insert(2, "Bob");
-            Console.WriteLine();
-
-            foreach (string name in names)
-            {
-                Console.WriteLine(name);
-            }
-
+            // ContainsKey(key)
+            // ContainsValue(value)
             // Clear()
-            // Contains(item) 
-            // Count
-            
+            // Remove(key)
         }   
     }
 }
