@@ -7,22 +7,26 @@ using System.IO;
 using System.Text.Json;
 
 namespace OOP {
-
     internal class Program
     {
         static void Main(string[] args)
         {
-           Dictionary<string, string> dict = new Dictionary<string, string>();
 
-            dict.Add("name", "Apple");
-            string value = dict["name"];
+            var set = new HashSet<int>() { 1, 2, 3, 4, 5 };
 
-            Console.WriteLine(value);
+            set.UnionWith(new int[] {5, 6, 7, 8});
 
-            // ContainsKey(key)
-            // ContainsValue(value)
-            // Clear()
-            // Remove(key)
-        }   
+            //set.ExceptWith(new int[] { 5, 6, 7, 8 });
+
+            //set.IntersectWith(new int[] { 1, 10, 2, 20, 3, 30 });
+
+            set.RemoveWhere(x => x % 2 == 0);
+
+            foreach (var item in set)
+            {
+                Console.WriteLine(item);
+            }
+
+        }
     }
 }
