@@ -8,77 +8,54 @@ using System.Text.Json;
 
 namespace OOP {
 
-    class Person
-    {
-        private string name;
-        private int age;
-
-        public string Name
-        {
-            get => name;
-
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentException("Name не может быть пустым");
-                }
-                name = value;
-            }
-        }
-
-        public int Age
-        {
-            get => age;
-
-            set
-            {
-                if (value < 0 || value > 85)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(Age),"Возраст должен быть от 0 до 85");
-                }
-                age = value;
-            }
-        }
-    }
-
     internal class Program
     {
         static void Main(string[] args)
         {
-            string jsonValid = @"{ ""Name"": ""John"", ""Age"": 30 }";
-            string jsonInvalid = @"{ ""Name"": ""Tom"", ""Age"": -10 }";
+            List<int> numbers = new List<int>() { 1, 2, 3, 4, 5 };
+            List<string> names = new List<string>() { "John", "Tom", "Jim" };
 
-            try
+            foreach (string name in names)
             {
-                Person person = JsonSerializer.Deserialize<Person>(jsonValid);
-                Console.WriteLine($"Success: {person.Name}, {person.Age} лет");
-            } catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-                
-            }         
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine(name);
             }
 
-            try
-            {
-                Person person = JsonSerializer.Deserialize<Person>(jsonInvalid);
-                Console.WriteLine($"Success: {person.Name}, {person.Age} лет");
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
+            names.Add("Tim");
+            Console.WriteLine();
 
-            }
-            catch (Exception ex)
+            foreach (string name in names)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine(name);
             }
 
-            Console.ReadKey();
-        }      
+            names.Remove("Tom");
+            Console.WriteLine();
+
+            foreach (string name in names)
+            {
+                Console.WriteLine(name);
+            }
+
+            names.RemoveAt(0);
+            Console.WriteLine();
+
+            foreach (string name in names)
+            {
+                Console.WriteLine(name);
+            }
+
+            names.Insert(2, "Bob");
+            Console.WriteLine();
+
+            foreach (string name in names)
+            {
+                Console.WriteLine(name);
+            }
+
+            // Clear()
+            // Contains(item) 
+            // Count
+            
+        }   
     }
 }
