@@ -5,28 +5,41 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.Json;
+using System.Net.Http;
 
 namespace OOP {
+    class User
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public string username { get; set; }
+        public string email { get; set; }
+    }
+
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
+            HttpClient client = new HttpClient();
+            string url = "https://jsonplaceholder.typicode.com/users";
 
-            var set = new HashSet<int>() { 1, 2, 3, 4, 5 };
+            var response = await client.GetAsync(url);
 
-            set.UnionWith(new int[] {5, 6, 7, 8});
-
-            //set.ExceptWith(new int[] { 5, 6, 7, 8 });
-
-            //set.IntersectWith(new int[] { 1, 10, 2, 20, 3, 30 });
-
-            set.RemoveWhere(x => x % 2 == 0);
-
-            foreach (var item in set)
+            if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine(item);
+                string json = await response.Content.ReadAsStringAsync();
+                List<User> users = JsonSerializer.Deserialize<List<User>>(json);
+
+                foreach (User user in users)
+                {
+                    Console.WriteLine($"Name: {user.name}\n Username: {user.username}\n Email: {user.email}");
+                }
+            } else
+            {
+                Console.WriteLine($"Ошибка при получении данных с ресурса {url}: {response.StatusCode}");
             }
 
+            Console.ReadKey();
         }
     }
 }
