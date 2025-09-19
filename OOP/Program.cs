@@ -16,27 +16,39 @@ namespace OOP {
         public string email { get; set; }
     }
 
-    internal class Program
+    class UserApiClient
     {
-        static async Task Main(string[] args)
-        {
-            HttpClient client = new HttpClient();
-            string url = "https://jsonplaceholder.typicode.com/users";
+        private HttpClient client = new HttpClient();
 
+        public async Task<List<User>> GetUsers()
+        {
+            string url = "https://jsonplaceholder.typicode.com/users";
             var response = await client.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
-                List<User> users = JsonSerializer.Deserialize<List<User>>(json);
-
-                foreach (User user in users)
-                {
-                    Console.WriteLine($"Name: {user.name}\n Username: {user.username}\n Email: {user.email}");
-                }
-            } else
+                return JsonSerializer.Deserialize<List<User>>(json);
+            }
+            else
             {
                 Console.WriteLine($"Ошибка при получении данных с ресурса {url}: {response.StatusCode}");
+                return null;
+            }
+        }
+    }
+
+    internal class Program
+    {
+        static async Task Main(string[] args)
+        {
+            UserApiClient userClient = new UserApiClient();
+
+            var users = await userClient.GetUsers();
+
+            foreach (var user in users)
+            {
+                Console.WriteLine(user.name);
             }
 
             Console.ReadKey();
