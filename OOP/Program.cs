@@ -9,9 +9,6 @@ using System.Net.Http;
 using OOP.ApiClients;
 
 namespace OOP {
-   
-
-
     internal class Program
     {
         static async Task Main(string[] args)
