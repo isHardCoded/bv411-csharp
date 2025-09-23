@@ -16,6 +16,34 @@ namespace OOP {
         public string email { get; set; }
     }
 
+    class Comment
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public string body { get; set; }
+    }
+
+    class CommentApiClient
+    {
+        private HttpClient client = new HttpClient();
+
+        public async Task<List<Comment>> GetComments()
+        {
+            string url = "https://jsonplaceholder.typicode.com/comments";
+            var response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<Comment>>(json);
+            } else
+            {
+                Console.WriteLine($"Ошибка при получении данных с ресурса {url}: {response.StatusCode}");
+                return null;
+            }
+        }
+    }
+
     class UserApiClient
     {
         private HttpClient client = new HttpClient();
@@ -49,6 +77,18 @@ namespace OOP {
             foreach (var user in users)
             {
                 Console.WriteLine(user.name);
+            }
+
+            CommentApiClient commentClient = new CommentApiClient();
+
+            var comments = await commentClient.GetComments();
+
+            foreach (var comment in comments)
+            {
+                Console.WriteLine($"Айди: {comment.id}");
+                Console.WriteLine($"Заголовок: {comment.name}");
+                Console.WriteLine($"Контент: {comment.body}");
+                Console.WriteLine();
             }
 
             Console.ReadKey();
