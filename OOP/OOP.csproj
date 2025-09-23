@@ -74,7 +74,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiClients\ApiClient.cs" />
+    <Compile Include="ApiClients\CommentApiClient.cs" />
+    <Compile Include="ApiClients\UserApiClient.cs" />
     <Compile Include="Constants\ApiConstants.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -82,9 +87,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ApiClients\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
