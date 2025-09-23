@@ -6,75 +6,26 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Text.Json;
 using System.Net.Http;
+using OOP.ApiClients;
 
 namespace OOP {
-    class CommentApiClient
-    {
-        private HttpClient client = new HttpClient();
+   
 
-        public async Task<List<Comment>> GetComments()
-        {
-            string url = "https://jsonplaceholder.typicode.com/comments";
-            var response = await client.GetAsync(url);
-
-            if (response.IsSuccessStatusCode)
-            {
-                string json = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<List<Comment>>(json);
-            } else
-            {
-                Console.WriteLine($"Ошибка при получении данных с ресурса {url}: {response.StatusCode}");
-                return null;
-            }
-        }
-    }
-
-    class UserApiClient
-    {
-        private HttpClient client = new HttpClient();
-
-        public async Task<List<User>> GetUsers()
-        {
-            string url = "https://jsonplaceholder.typicode.com/users";
-            var response = await client.GetAsync(url);
-
-            if (response.IsSuccessStatusCode)
-            {
-                string json = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<List<User>>(json);
-            }
-            else
-            {
-                Console.WriteLine($"Ошибка при получении данных с ресурса {url}: {response.StatusCode}");
-                return null;
-            }
-        }
-    }
 
     internal class Program
     {
         static async Task Main(string[] args)
         {
-            UserApiClient userClient = new UserApiClient();
+            var httpClient = new HttpClient();
 
-            var users = await userClient.GetUsers();
+            var userApiClient = new UserApiClient(httpClient);
+            var commentApiClient = new CommentApiClient(httpClient);
 
-            foreach (var user in users)
-            {
-                Console.WriteLine(user.name);
-            }
+            var users = await userApiClient.GetUsersAsync();
+            var comments = await commentApiClient.GetCommentsAsync();
 
-            CommentApiClient commentClient = new CommentApiClient();
-
-            var comments = await commentClient.GetComments();
-
-            foreach (var comment in comments)
-            {
-                Console.WriteLine($"Айди: {comment.id}");
-                Console.WriteLine($"Заголовок: {comment.name}");
-                Console.WriteLine($"Контент: {comment.body}");
-                Console.WriteLine();
-            }
+            Console.WriteLine(users);
+            Console.WriteLine(comments);
 
             Console.ReadKey();
         }
