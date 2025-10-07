@@ -7,18 +7,17 @@ using System.IO;
 
 namespace OOP {
 
-    public sealed class Singleton
+    public sealed class Logger
     {
-        private static readonly Singleton instance = new Singleton();
+        private static readonly Logger instance = new Logger();
 
-        private Singleton() { }
+        private Logger() { }
 
-        public static Singleton Instance
+        public static Logger Instance { get { return instance; } }
+
+        public void Log(string message)
         {
-            get
-            {
-                return instance;
-            }
+            Console.WriteLine($"[LOG] {message}");
         }
     }
 
@@ -26,7 +25,15 @@ namespace OOP {
     {
         static void Main(string[] args)
         {
-            
+            Logger userLogger = Logger.Instance;
+            userLogger.Log("Здесь мы логируем пользователей");
+
+            Logger postsLogger = Logger.Instance;
+            postsLogger.Log("А уже здесь мы логируем посты");
+
+            Console.WriteLine(userLogger == postsLogger);
+
+
             Console.ReadKey();
         }
     }
