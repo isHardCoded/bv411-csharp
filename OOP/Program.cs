@@ -7,17 +7,51 @@ using System.IO;
 
 namespace OOP {
 
-    public sealed class Logger
+    public interface IProduct
     {
-        private static readonly Logger instance = new Logger();
+        void DoSomething();
+    }
 
-        private Logger() { }
-
-        public static Logger Instance { get { return instance; } }
-
-        public void Log(string message)
+    public class ProductA : IProduct 
+    {
+        public void DoSomething() 
         {
-            Console.WriteLine($"[LOG] {message}");
+            Console.WriteLine("Product A doing something");
+        }
+    }
+
+    public class ProductB : IProduct
+    {
+        public void DoSomething()
+        {
+            Console.WriteLine("Product B doing something");
+        }
+    }
+
+    public abstract class Creator
+    {
+        public abstract IProduct FactoryMethod();
+
+        public void SomeOperation()
+        {
+            var product = FactoryMethod();
+            product.DoSomething();
+        }
+    }
+
+    public class ConcreteCreateA : Creator
+    {
+        public override IProduct FactoryMethod()
+        {
+            return new ProductA();
+        }
+    }
+
+    public class ConcreteCreateB : Creator
+    {
+        public override IProduct FactoryMethod()
+        {
+            return new ProductB();
         }
     }
 
@@ -25,14 +59,11 @@ namespace OOP {
     {
         static void Main(string[] args)
         {
-            Logger userLogger = Logger.Instance;
-            userLogger.Log("Здесь мы логируем пользователей");
+            Creator creator = new ConcreteCreateA();
+            creator.SomeOperation();
 
-            Logger postsLogger = Logger.Instance;
-            postsLogger.Log("А уже здесь мы логируем посты");
-
-            Console.WriteLine(userLogger == postsLogger);
-
+            creator = new ConcreteCreateB();
+            creator.SomeOperation();
 
             Console.ReadKey();
         }
