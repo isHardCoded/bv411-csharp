@@ -9,49 +9,59 @@ namespace OOP {
 
     public interface IProduct
     {
-        void DoSomething();
+        string GetDetails();
     }
 
-    public class ProductA : IProduct 
+    public class Electronics : IProduct
     {
-        public void DoSomething() 
+        public string GetDetails()
         {
-            Console.WriteLine("Product A doing something");
+            return "Электронное устройство: смартфон";
         }
     }
 
-    public class ProductB : IProduct
+    public class Cloting : IProduct
     {
-        public void DoSomething()
+        public string GetDetails()
         {
-            Console.WriteLine("Product B doing something");
+            return "Одежда: футболка";
         }
     }
 
-    public abstract class Creator
+    public class Book : IProduct
     {
-        public abstract IProduct FactoryMethod();
-
-        public void SomeOperation()
+        public string GetDetails()
         {
-            var product = FactoryMethod();
-            product.DoSomething();
+            return "Книга: программирование на C#";
         }
     }
 
-    public class ConcreteCreateA : Creator
+    public interface IProductFactory
     {
-        public override IProduct FactoryMethod()
+        IProduct CreateProduct();
+    }
+
+    public class ElectronicsFactory : IProductFactory
+    {
+        public IProduct CreateProduct()
         {
-            return new ProductA();
+            return new Electronics();
         }
     }
 
-    public class ConcreteCreateB : Creator
+    public class ClothingFactory : IProductFactory
     {
-        public override IProduct FactoryMethod()
+        public IProduct CreateProduct()
         {
-            return new ProductB();
+            return new Cloting();
+        }
+    }
+
+    public class BookFactory : IProductFactory
+    {
+        public IProduct CreateProduct()
+        {
+            return new Book();
         }
     }
 
@@ -59,11 +69,20 @@ namespace OOP {
     {
         static void Main(string[] args)
         {
-            Creator creator = new ConcreteCreateA();
-            creator.SomeOperation();
+            IProductFactory factory;
+            IProduct product;
 
-            creator = new ConcreteCreateB();
-            creator.SomeOperation();
+            factory = new ElectronicsFactory();
+            product = factory.CreateProduct();
+            Console.WriteLine(product.GetDetails());
+
+            factory = new ClothingFactory();
+            product = factory.CreateProduct();
+            Console.WriteLine(product.GetDetails());
+
+            factory = new BookFactory();
+            product = factory.CreateProduct();
+            Console.WriteLine(product.GetDetails());
 
             Console.ReadKey();
         }
