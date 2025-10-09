@@ -7,82 +7,66 @@ using System.IO;
 
 namespace OOP {
 
-    public interface IProduct
-    {
-        string GetDetails();
-    }
-
-    public class Electronics : IProduct
-    {
-        public string GetDetails()
-        {
-            return "Электронное устройство: смартфон";
-        }
-    }
-
-    public class Cloting : IProduct
-    {
-        public string GetDetails()
-        {
-            return "Одежда: футболка";
-        }
-    }
-
-    public class Book : IProduct
-    {
-        public string GetDetails()
-        {
-            return "Книга: программирование на C#";
-        }
-    }
-
-    public interface IProductFactory
-    {
-        IProduct CreateProduct();
-    }
-
-    public class ElectronicsFactory : IProductFactory
-    {
-        public IProduct CreateProduct()
-        {
-            return new Electronics();
-        }
-    }
-
-    public class ClothingFactory : IProductFactory
-    {
-        public IProduct CreateProduct()
-        {
-            return new Cloting();
-        }
-    }
-
-    public class BookFactory : IProductFactory
-    {
-        public IProduct CreateProduct()
-        {
-            return new Book();
-        }
-    }
-
     internal class Program
     {
+        public class Computer
+        {
+            public string CPU { get; }
+            public string MotherBoard { get; }
+            public int RAM { get; }
+            public int Storage { get; }
+            public bool HasGraphicsCard { get; }
+
+            private Computer(Builder builder)
+            {
+                CPU = builder.CPU;
+                RAM = builder.RAM;
+                MotherBoard = builder.MotherBoard;
+                Storage = builder.Storage;
+                HasGraphicsCard = builder.HasGraphicsCard;
+            }
+
+            public class Builder
+            {
+                public string CPU { get; private set; }
+                public string MotherBoard { get; private set; }
+                public int RAM { get; private set; }
+                public int Storage { get; private set; } = 256;
+                public bool HasGraphicsCard { get; private set; } = false;
+
+                public Builder(string cpu, string motherboard, int ram)
+                {
+                    CPU = cpu;
+                    RAM = ram;
+                    MotherBoard = motherboard;
+                }
+
+                public Builder SetStorage(int storage)
+                {
+                    Storage = storage;
+                    return this;
+                }
+
+                public Builder SetGraphicsCard(bool hasGraphicsCard)
+                {
+                    HasGraphicsCard = hasGraphicsCard;
+                    return this;
+                }
+
+                public Computer Build()
+                {
+                    return new Computer(this);
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
-            IProductFactory factory;
-            IProduct product;
-
-            factory = new ElectronicsFactory();
-            product = factory.CreateProduct();
-            Console.WriteLine(product.GetDetails());
-
-            factory = new ClothingFactory();
-            product = factory.CreateProduct();
-            Console.WriteLine(product.GetDetails());
-
-            factory = new BookFactory();
-            product = factory.CreateProduct();
-            Console.WriteLine(product.GetDetails());
+            var pc = new Computer.Builder("Artem", "ASUS12345", 128)
+                .SetStorage(256)
+                .SetGraphicsCard(true)
+                .Build();
+            
 
             Console.ReadKey();
         }
