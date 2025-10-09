@@ -11,6 +11,7 @@ namespace OOP {
     {
         public class Computer
         {
+            public string Name { get; }
             public string CPU { get; }
             public string MotherBoard { get; }
             public int RAM { get; }
@@ -19,6 +20,7 @@ namespace OOP {
 
             private Computer(Builder builder)
             {
+                Name = builder.Name;
                 CPU = builder.CPU;
                 RAM = builder.RAM;
                 MotherBoard = builder.MotherBoard;
@@ -28,6 +30,7 @@ namespace OOP {
 
             public void ShowInfo()
             {
+                Console.WriteLine($"Name: {Name}");
                 Console.WriteLine($"CPU: {CPU}");
                 Console.WriteLine($"GPU: {GraphicsCard}");
                 Console.WriteLine($"MotherBoard: {MotherBoard}");
@@ -37,13 +40,17 @@ namespace OOP {
 
             public class Builder
             {
+                public string Name { get; set; }
                 public string CPU { get; private set; }
                 public string MotherBoard { get; private set; }
                 public int RAM { get; private set; }
                 public int Storage { get; private set; } = 256;
                 public string GraphicsCard { get; private set; }
 
-                public Builder() { }
+                public Builder(string name) 
+                {
+                    Name = name;
+                }
 
                 public Builder SetMotherboard(string board)
                 {
@@ -84,7 +91,7 @@ namespace OOP {
 
         static void Main(string[] args)
         {
-            var pc1 = new Computer.Builder()
+            var pc1 = new Computer.Builder("Сборка 1")
                 .SetMotherboard("MotherBoard B550")
                 .SetCPU("Ryzen 5 5600")
                 .SetRAM(32)
