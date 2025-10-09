@@ -3,69 +3,104 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
-namespace OOP
-{
-    class Employee
-    {
-        public string name;
-        public string surname;
-        public int age;
-        private float salary;
-
-        public Employee(string name, string surname, int age, float salary)
-        {
-            this.name = name;
-            this.surname = surname;
-            this.age = age;
-            this.salary = salary;
-        }
-
-        public float getSalary()
-        {
-            return salary;
-        }
-
-        public float setSalary(float amount)
-        {
-            return salary += amount;
-        }
-
-        public virtual string Work()
-        {
-            return "Working";
-        }
-    }
-
-    class Programmer : Employee
-    {
-        public string pos;
-
-        public Programmer(
-            string name, 
-            string surname, 
-            int age, 
-            float salary, 
-            string pos) : base(name, surname, age, salary)
-        {
-            this.pos = pos;
-        }
-
-        public override string Work()
-        {
-            return "typing code";
-        }
-    }
-
+namespace OOP {
 
     internal class Program
     {
+        public class Computer
+        {
+            public string Name { get; }
+            public string CPU { get; }
+            public string MotherBoard { get; }
+            public int RAM { get; }
+            public int Storage { get; }
+            public string GraphicsCard { get; }
+
+            private Computer(Builder builder)
+            {
+                Name = builder.Name;
+                CPU = builder.CPU;
+                RAM = builder.RAM;
+                MotherBoard = builder.MotherBoard;
+                Storage = builder.Storage;
+                GraphicsCard = builder.GraphicsCard;
+            }
+
+            public void ShowInfo()
+            {
+                Console.WriteLine($"Name: {Name}");
+                Console.WriteLine($"CPU: {CPU}");
+                Console.WriteLine($"GPU: {GraphicsCard}");
+                Console.WriteLine($"MotherBoard: {MotherBoard}");
+                Console.WriteLine($"RAM: {RAM}");
+                Console.WriteLine($"Storage: {Storage}");
+            }
+
+            public class Builder
+            {
+                public string Name { get; set; }
+                public string CPU { get; private set; }
+                public string MotherBoard { get; private set; }
+                public int RAM { get; private set; }
+                public int Storage { get; private set; } = 256;
+                public string GraphicsCard { get; private set; }
+
+                public Builder(string name) 
+                {
+                    Name = name;
+                }
+
+                public Builder SetMotherboard(string board)
+                {
+                    MotherBoard = board;
+                    return this;
+                }
+
+                public Builder SetCPU(string cpu)
+                {
+                    CPU = cpu;
+                    return this;
+                }
+
+                public Builder SetRAM(int size)
+                {
+                    RAM = size;
+                    return this;
+                }
+
+                public Builder SetStorage(int storage)
+                {
+                    Storage = storage;
+                    return this;
+                }
+
+                public Builder SetGPU(string card)
+                {
+                    GraphicsCard = card;
+                    return this;
+                }
+
+                public Computer Build()
+                {
+                    return new Computer(this);
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
-            Programmer programmer = new Programmer("Bob", "Doe", 25, 30000, "Trainee");
+            var pc1 = new Computer.Builder("Сборка 1")
+                .SetMotherboard("MotherBoard B550")
+                .SetCPU("Ryzen 5 5600")
+                .SetRAM(32)
+                .SetStorage(512)
+                .SetGPU("RTX 4060")
+                .Build();
 
-            Console.WriteLine($"Programmer {programmer.name} {programmer.Work()}");
-        
+            pc1.ShowInfo();
+
             Console.ReadKey();
         }
     }
