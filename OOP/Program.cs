@@ -9,98 +9,72 @@ namespace OOP {
 
     internal class Program
     {
-        public class Computer
+        public class Pizza
         {
-            public string Name { get; }
-            public string CPU { get; }
-            public string MotherBoard { get; }
-            public int RAM { get; }
-            public int Storage { get; }
-            public string GraphicsCard { get; }
+            public string Dough { get; }
+            public string Sauce { get; }
+            public string Filling { get; }
+            public string Size { get; }
 
-            private Computer(Builder builder)
+            private Pizza(Builder builder)
             {
-                Name = builder.Name;
-                CPU = builder.CPU;
-                RAM = builder.RAM;
-                MotherBoard = builder.MotherBoard;
-                Storage = builder.Storage;
-                GraphicsCard = builder.GraphicsCard;
-            }
-
-            public void ShowInfo()
-            {
-                Console.WriteLine($"Name: {Name}");
-                Console.WriteLine($"CPU: {CPU}");
-                Console.WriteLine($"GPU: {GraphicsCard}");
-                Console.WriteLine($"MotherBoard: {MotherBoard}");
-                Console.WriteLine($"RAM: {RAM}");
-                Console.WriteLine($"Storage: {Storage}");
+               Dough = builder.Dough;
+               Sauce = builder.Sauce;
+               Filling = builder.Filling;
+               Size = builder.Size;
             }
 
             public class Builder
             {
-                public string Name { get; set; }
-                public string CPU { get; private set; }
-                public string MotherBoard { get; private set; }
-                public int RAM { get; private set; }
-                public int Storage { get; private set; } = 256;
-                public string GraphicsCard { get; private set; }
+                public string Dough { get; private set; }
+                public string Sauce { get; private set; } = "Отсутствует";
+                public string Filling { get; private set; } = "Отсутствует";
+                public string Size { get; private set; } = "Отсутствует";
 
-                public Builder(string name) 
+                public Builder(string dough)
                 {
-                    Name = name;
+                    Dough = dough;
                 }
 
-                public Builder SetMotherboard(string board)
+                public Builder SetSauce(string sauce)
                 {
-                    MotherBoard = board;
+                    Sauce = sauce;
                     return this;
                 }
 
-                public Builder SetCPU(string cpu)
+                public Builder SetFilling(string filling)
                 {
-                    CPU = cpu;
+                    Filling = filling;
                     return this;
                 }
 
-                public Builder SetRAM(int size)
+                public Builder SetSize(string size)
                 {
-                    RAM = size;
+                    Size = size;
                     return this;
                 }
 
-                public Builder SetStorage(int storage)
+                public Pizza Build()
                 {
-                    Storage = storage;
-                    return this;
-                }
-
-                public Builder SetGPU(string card)
-                {
-                    GraphicsCard = card;
-                    return this;
-                }
-
-                public Computer Build()
-                {
-                    return new Computer(this);
+                    return new Pizza(this);
                 }
             }
-        }
 
+            public string Show()
+            {
+                return $"Тесто: {Dough}\n Соус: {Sauce}\n Начинка: {Filling}\n Размер: {Size}";
+            }
+        }
         static void Main(string[] args)
         {
-            var pc1 = new Computer.Builder("Сборка 1")
-                .SetMotherboard("MotherBoard B550")
-                .SetCPU("Ryzen 5 5600")
-                .SetRAM(32)
-                .SetStorage(512)
-                .SetGPU("RTX 4060")
+            Pizza pizza = new Pizza.Builder("Тонкое")
+                .SetSauce("Томатный")
+                .SetFilling("Пепперони")
+                .SetSize("Маленькая")
                 .Build();
 
-            pc1.ShowInfo();
-
+            Console.WriteLine(pizza.Show());
+            
             Console.ReadKey();
         }
     }
