@@ -16,43 +16,40 @@ namespace OOP {
         {
             City = city;
         }
+    }
 
-        public string GetCity()
-        {
-            return City;
-        }
+    public abstract class User
+    {
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
-        public void SetCity(string city)
+        public Address Address { get; set; }
+
+        public abstract User ShallowCopy();
+
+        public abstract User DeepCopy();
+
+        public override string ToString()
         {
-            City = city;
+            return $"Id: {Id}, First name: {FirstName} Lastname: {LastName} City: {Address.City}"; 
         }
     }
-        public class Person
+
+    public class Freelancer : User
     {
-        public string Name { get; set; }
-        public Address Address {  get; set; }
+        public string Skill { get; set; }
 
-        public Person(string name, Address address) 
+        public override User ShallowCopy()
         {
-            Name = name;
-            Address = address;
+            return (User)this.MemberwiseClone();
         }
 
-        public Person ShallowCopy()
+        public override User DeepCopy()
         {
-            return (Person)this.MemberwiseClone();
-        }
-
-        public Person DeepCopy()
-        {
-            Person clone = (Person)this.MemberwiseClone();
+            Freelancer clone = (Freelancer)this.MemberwiseClone();
             clone.Address = new Address(this.Address.City);
             return clone;
-        }
-
-        public string Show()
-        {
-            return $"Name: {Name}, Address: {Address.GetCity()}";
         }
     }
 
@@ -61,25 +58,20 @@ namespace OOP {
         static void Main(string[] args)
         {
             Address address = new Address("Tyumen");
-            Person person = new Person("John", address);
+            Freelancer original = new Freelancer
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Doe",
+                Address = address
+            };
 
-            //Console.WriteLine("Shallow Copy");
-            //Person copyPerson = person.ShallowCopy();
-            //Console.WriteLine($"Original: {person.Show()}");
-            //Console.WriteLine($"Copy: {copyPerson.Show()}");
+            Freelancer copy = (Freelancer)original.DeepCopy();
+            copy.Id = 2;
+            copy.Address.City = "Moscow";
 
-            //copyPerson.Address.SetCity("Moscow");
-            //Console.WriteLine($"После изменения Original: {person.Show()}");
-            //Console.WriteLine($"После изменения Copy: {copyPerson.Show()}");
-
-            Console.WriteLine("Deep Copy");
-            Person deepClonePerson = person.DeepCopy();
-            Console.WriteLine($"Original: {person.Show()}");
-            Console.WriteLine($"Copy: {deepClonePerson.Show()}");
-
-            deepClonePerson.Address.SetCity("Moscow");
-            Console.WriteLine($"После изменения Original: {person.Show()}");
-            Console.WriteLine($"После изменения Copy: {deepClonePerson.Show()}");
+            Console.WriteLine(original);
+            Console.WriteLine(copy);
 
             Console.ReadKey();
         }
