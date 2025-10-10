@@ -4,42 +4,74 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Xml.Linq;
 
 namespace OOP {
 
-    public abstract class Prototype
+    public class Address
     {
-        public abstract Prototype Clone();
+        public string City { get; set; }
+
+        public Address(string city)
+        {
+            City = city;
+        }
     }
 
-    public class ConcretePrototype : Prototype
+    public abstract class User
     {
-        public int Data;
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
-        public ConcretePrototype(int data) 
+        public Address Address { get; set; }
+
+        public abstract User ShallowCopy();
+
+        public abstract User DeepCopy();
+
+        public override string ToString()
         {
-            Data = data;
+            return $"Id: {Id}, First name: {FirstName} Lastname: {LastName} City: {Address.City}"; 
+        }
+    }
+
+    public class Freelancer : User
+    {
+        public string Skill { get; set; }
+
+        public override User ShallowCopy()
+        {
+            return (User)this.MemberwiseClone();
         }
 
-        public override Prototype Clone()
+        public override User DeepCopy()
         {
-            return new ConcretePrototype(this.Data);
+            Freelancer clone = (Freelancer)this.MemberwiseClone();
+            clone.Address = new Address(this.Address.City);
+            return clone;
         }
-    }   
+    }
 
     internal class Program
     {
         static void Main(string[] args)
         {
-            ConcretePrototype original = new ConcretePrototype(15);
-            ConcretePrototype copy = (ConcretePrototype)original.Clone();
+            Address address = new Address("Tyumen");
+            Freelancer original = new Freelancer
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Doe",
+                Address = address
+            };
 
-            Console.WriteLine($"Original data: {original.Data}");
-            Console.WriteLine($"Copy data: {copy.Data}");
+            Freelancer copy = (Freelancer)original.DeepCopy();
+            copy.Id = 2;
+            copy.Address.City = "Moscow";
 
-            copy.Data = 30;
-            Console.WriteLine($"После изменения Original data: {original.Data}");
-            Console.WriteLine($"После изменения Copy data: {copy.Data}");
+            Console.WriteLine(original);
+            Console.WriteLine(copy);
 
             Console.ReadKey();
         }
