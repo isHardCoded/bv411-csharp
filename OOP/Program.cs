@@ -7,74 +7,40 @@ using System.IO;
 
 namespace OOP {
 
+    public abstract class Prototype
+    {
+        public abstract Prototype Clone();
+    }
+
+    public class ConcretePrototype : Prototype
+    {
+        public int Data;
+
+        public ConcretePrototype(int data) 
+        {
+            Data = data;
+        }
+
+        public override Prototype Clone()
+        {
+            return new ConcretePrototype(this.Data);
+        }
+    }   
+
     internal class Program
     {
-        public class Pizza
-        {
-            public string Dough { get; }
-            public string Sauce { get; }
-            public string Filling { get; }
-            public string Size { get; }
-
-            private Pizza(Builder builder)
-            {
-               Dough = builder.Dough;
-               Sauce = builder.Sauce;
-               Filling = builder.Filling;
-               Size = builder.Size;
-            }
-
-            public class Builder
-            {
-                public string Dough { get; private set; }
-                public string Sauce { get; private set; } = "Отсутствует";
-                public string Filling { get; private set; } = "Отсутствует";
-                public string Size { get; private set; } = "Отсутствует";
-
-                public Builder(string dough)
-                {
-                    Dough = dough;
-                }
-
-                public Builder SetSauce(string sauce)
-                {
-                    Sauce = sauce;
-                    return this;
-                }
-
-                public Builder SetFilling(string filling)
-                {
-                    Filling = filling;
-                    return this;
-                }
-
-                public Builder SetSize(string size)
-                {
-                    Size = size;
-                    return this;
-                }
-
-                public Pizza Build()
-                {
-                    return new Pizza(this);
-                }
-            }
-
-            public string Show()
-            {
-                return $"Тесто: {Dough}\n Соус: {Sauce}\n Начинка: {Filling}\n Размер: {Size}";
-            }
-        }
         static void Main(string[] args)
         {
-            Pizza pizza = new Pizza.Builder("Тонкое")
-                .SetSauce("Томатный")
-                .SetFilling("Пепперони")
-                .SetSize("Маленькая")
-                .Build();
+            ConcretePrototype original = new ConcretePrototype(15);
+            ConcretePrototype copy = (ConcretePrototype)original.Clone();
 
-            Console.WriteLine(pizza.Show());
-            
+            Console.WriteLine($"Original data: {original.Data}");
+            Console.WriteLine($"Copy data: {copy.Data}");
+
+            copy.Data = 30;
+            Console.WriteLine($"После изменения Original data: {original.Data}");
+            Console.WriteLine($"После изменения Copy data: {copy.Data}");
+
             Console.ReadKey();
         }
     }
