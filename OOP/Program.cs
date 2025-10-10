@@ -4,42 +4,82 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Xml.Linq;
 
 namespace OOP {
 
-    public abstract class Prototype
+    public class Address
     {
-        public abstract Prototype Clone();
+        public string City { get; set; }
+
+        public Address(string city)
+        {
+            City = city;
+        }
+
+        public string GetCity()
+        {
+            return City;
+        }
+
+        public void SetCity(string city)
+        {
+            City = city;
+        }
     }
-
-    public class ConcretePrototype : Prototype
+        public class Person
     {
-        public int Data;
+        public string Name { get; set; }
+        public Address Address {  get; set; }
 
-        public ConcretePrototype(int data) 
+        public Person(string name, Address address) 
         {
-            Data = data;
+            Name = name;
+            Address = address;
         }
 
-        public override Prototype Clone()
+        public Person ShallowCopy()
         {
-            return new ConcretePrototype(this.Data);
+            return (Person)this.MemberwiseClone();
         }
-    }   
+
+        public Person DeepCopy()
+        {
+            Person clone = (Person)this.MemberwiseClone();
+            clone.Address = new Address(this.Address.City);
+            return clone;
+        }
+
+        public string Show()
+        {
+            return $"Name: {Name}, Address: {Address.GetCity()}";
+        }
+    }
 
     internal class Program
     {
         static void Main(string[] args)
         {
-            ConcretePrototype original = new ConcretePrototype(15);
-            ConcretePrototype copy = (ConcretePrototype)original.Clone();
+            Address address = new Address("Tyumen");
+            Person person = new Person("John", address);
 
-            Console.WriteLine($"Original data: {original.Data}");
-            Console.WriteLine($"Copy data: {copy.Data}");
+            //Console.WriteLine("Shallow Copy");
+            //Person copyPerson = person.ShallowCopy();
+            //Console.WriteLine($"Original: {person.Show()}");
+            //Console.WriteLine($"Copy: {copyPerson.Show()}");
 
-            copy.Data = 30;
-            Console.WriteLine($"После изменения Original data: {original.Data}");
-            Console.WriteLine($"После изменения Copy data: {copy.Data}");
+            //copyPerson.Address.SetCity("Moscow");
+            //Console.WriteLine($"После изменения Original: {person.Show()}");
+            //Console.WriteLine($"После изменения Copy: {copyPerson.Show()}");
+
+            Console.WriteLine("Deep Copy");
+            Person deepClonePerson = person.DeepCopy();
+            Console.WriteLine($"Original: {person.Show()}");
+            Console.WriteLine($"Copy: {deepClonePerson.Show()}");
+
+            deepClonePerson.Address.SetCity("Moscow");
+            Console.WriteLine($"После изменения Original: {person.Show()}");
+            Console.WriteLine($"После изменения Copy: {deepClonePerson.Show()}");
 
             Console.ReadKey();
         }
